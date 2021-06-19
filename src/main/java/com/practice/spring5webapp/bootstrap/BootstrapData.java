@@ -26,6 +26,14 @@ public class BootstrapData implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		Publisher publisher = new Publisher();
+		publisher.setName("Shane Thomas");
+		publisher.setCity("Bangalore");
+		publisher.setState("Karnataka");
+		publisher.setZip("27873812");
+		publisher.setAddressLine1("51-C, Brookefield area");
+		publisherRepository.save(publisher);
+		
 		Author a1 = new Author();
 		a1.setFirstName("John");
 		a1.setLastName("Watson");
@@ -34,21 +42,26 @@ public class BootstrapData implements CommandLineRunner {
 		b1.setIsbn("djzkfhksdhfkj");
 		a1.getBooks().add(b1);
 		b1.getAuthors().add(a1);
+		b1.setPublisher(publisher);
+		
+		Book b2 = new Book();
+		b2.setTitle("Angular Course");
+		b2.setIsbn("nkjnknkfn");
+		a1.getBooks().add(b2);
+		b2.getAuthors().add(a1);
+		b2.setPublisher(publisher);
+		
+		publisher.getBooks().add(b1);
+		publisher.getBooks().add(b2);
 
 		authorRepository.save(a1);
 		bookRepository.save(b1);
+		bookRepository.save(b2);
+		publisherRepository.save(publisher);
 
 		System.out.println("Book Count: " + bookRepository.count());
-		System.out.println("---------------------------------------");
-		Publisher publisher = new Publisher();
-		publisher.setName("Shane Thomas");
-		publisher.setCity("Bangalore");
-		publisher.setState("Karnataka");
-		publisher.setZip("27873812");
-		publisher.setAddressLine1("51-C, Brookefield area");
-		publisherRepository.save(publisher);
-		System.out.println(publisher);
 		System.out.println("Publisher Count: " + publisherRepository.count());
+		System.out.println("Publisher Book Count: " + publisher.getBooks().size());
 	}
 
 }
